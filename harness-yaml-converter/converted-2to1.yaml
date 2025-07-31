@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: stocopy2
+  annotations:
+    backstage.io/source-location: url:https://bitbucket.org/pipelinefeaturetest/idp/src
+  tags:
+    - auto-generated
+  namespace: default
+  codeCoverageScore: 60
+spec:
+  owner: Harness_Account_All_Users
+  type: service
+  lifecycle: experimental
+  system: hyperworkspace
