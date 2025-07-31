@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver';
 import { convertYaml } from './utils/converter';
 import { sampleYaml1to2, sampleYaml2to1, sampleComponentYaml1to2, sampleComponentYaml2to1 } from './test-samples';
 import harnessLogo from './assets/logo-harness.svg';
+import githubLogo from './assets/github-logo.svg';
 
 // Global styles to set font family and base styles
 const GlobalStyle = createGlobalStyle`
@@ -336,13 +337,37 @@ const FooterContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
   width: 100%;
+  max-width: 1200px;
+  padding: 0 1rem;
+`;
+
+const GithubLink = styled.a`
+  display: flex;
+  align-items: center;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-left: 1rem;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #00ADE4;
+  }
+  
+  img {
+    margin-right: 0.5rem;
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const FooterLeft = styled.div`
   text-align: left;
+`;
+
+const FooterCenter = styled.div`
+  text-align: center;
 `;
 
 const FooterRight = styled.div`
@@ -523,8 +548,14 @@ function App() {
       <Footer>
         <FooterContent>
           <FooterLeft>
-            <CreatorInfo>Created by <CreatorLink href="https://in.linkedin.com/in/shibamdhar" target="_blank" rel="noopener noreferrer">&nbsp;Shibam Dhar</CreatorLink></CreatorInfo>
+            <GithubLink href="https://github.com/ShibamD/harness-yaml-convertor" target="_blank" rel="noopener noreferrer">
+              <img src={githubLogo} alt="GitHub" />
+              Source Code
+            </GithubLink>
           </FooterLeft>
+          <FooterCenter>
+            <CreatorInfo>Created by <CreatorLink href="https://in.linkedin.com/in/shibamdhar" target="_blank" rel="noopener noreferrer">&nbsp;Shibam Dhar</CreatorLink></CreatorInfo>
+          </FooterCenter>
           <FooterRight>
             Powered by <HarnessLink href="https://www.harness.io/products/internal-developer-portal" target="_blank" rel="noopener noreferrer">Harness IDP</HarnessLink>
           </FooterRight>
