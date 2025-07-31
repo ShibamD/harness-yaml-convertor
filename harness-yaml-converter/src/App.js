@@ -23,6 +23,35 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+  
+  /* Responsive breakpoints */
+  html {
+    font-size: 16px;
+  }
+  
+  @media (max-width: 1200px) {
+    html {
+      font-size: 15px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    html {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    html {
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    html {
+      font-size: 12px;
+    }
+  }
 `;
 
 // Harness logo component using the SVG file from assets
@@ -41,8 +70,8 @@ const LogoImage = styled.img`
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
   position: relative;
   
   &::before {
@@ -69,6 +98,12 @@ const Header = styled.header`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
   
   &::before {
     content: '';
@@ -110,12 +145,22 @@ const Title = styled.h1`
 const MainContent = styled.main`
   display: flex;
   flex: 1;
-  overflow: hidden;
-  padding: 1.5rem;
+  padding: 2rem;
   gap: 2rem;
   max-width: 1600px;
-  width: 100%;
   margin: 0 auto;
+  width: 100%;
+  
+  @media (max-width: 992px) {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
 `;
 
 const Panel = styled.div`
@@ -172,7 +217,7 @@ const PanelTitle = styled.h2`
     height: 18px;
     margin-right: 10px;
     background-color: ${props => props.isInput ? '#00ADE4' : '#0A3364'};
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='${props => props.isInput ? 'M19 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h4l3 3 3-3h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 16h-4.83l-.59.59L12 20.17l-1.59-1.59-.58-.58H5V4h14v14z' : 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-2h2V7h-4v2h2z'}'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='${props => props.isInput ? 'M19 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h4l3 3 3-3h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 16h-4.83l-.59.59L12 20.17l-1.59-1.59-.58-.58H5V4h14v14zm-7-2h2V7h-4v2h2z' : 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-2h2V7h-4v2h2z'}'/%3E%3C/svg%3E");
     mask-repeat: no-repeat;
     mask-position: center;
   }
@@ -311,15 +356,19 @@ const ErrorMessage = styled.div`
 
 const Footer = styled.footer`
   background-color: #f8f9fa;
-  padding: 1.25rem;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #0A3364;
-  border-top: 1px solid rgba(205, 244, 254, 0.8);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: 1rem 0;
+  margin-top: auto;
+  border-top: 1px solid #e9ecef;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem 0;
+    height: auto;
+  }
   
   &::before {
     content: '';
@@ -328,8 +377,7 @@ const Footer = styled.footer`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #A3E9FF 0%, #CDF4FE 100%);
-    opacity: 0.5;
+    background: linear-gradient(90deg, #0A3364 0%, #00BEF2 100%);
   }
 `;
 
@@ -340,6 +388,14 @@ const FooterContent = styled.div`
   width: 100%;
   max-width: 1200px;
   padding: 0 1rem;
+  position: relative;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    padding: 0 1.5rem;
+  }
 `;
 
 const GithubLink = styled.a`
@@ -363,19 +419,33 @@ const GithubLink = styled.a`
 `;
 
 const FooterLeft = styled.div`
-  text-align: left;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  position: absolute;
+  left: 1rem;
 `;
 
 const FooterCenter = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 `;
 
 const FooterRight = styled.div`
   text-align: right;
+  margin-left: auto;
 `;
 
 const CreatorInfo = styled.div`
-  font-weight: 500;
+  font-size: 0.9rem;
+  color: #333;
+  margin-left: 0.5rem;
   display: flex;
   align-items: center;
   
@@ -552,10 +622,8 @@ function App() {
               <img src={githubLogo} alt="GitHub" />
               Source Code
             </GithubLink>
-          </FooterLeft>
-          <FooterCenter>
             <CreatorInfo>Created by <CreatorLink href="https://in.linkedin.com/in/shibamdhar" target="_blank" rel="noopener noreferrer">&nbsp;Shibam Dhar</CreatorLink></CreatorInfo>
-          </FooterCenter>
+          </FooterLeft>
           <FooterRight>
             Powered by <HarnessLink href="https://www.harness.io/products/internal-developer-portal" target="_blank" rel="noopener noreferrer">Harness IDP</HarnessLink>
           </FooterRight>
