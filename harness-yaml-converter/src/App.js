@@ -4,6 +4,7 @@ import { Editor } from '@monaco-editor/react';
 import { saveAs } from 'file-saver';
 import { convertYaml } from './utils/converter';
 import { sampleYaml1to2, sampleYaml2to1, sampleComponentYaml1to2, sampleComponentYaml2to1 } from './test-samples';
+import { componentYaml1, componentYaml2, apiYaml1, apiYaml2, resourceYaml1, resourceYaml2, templateYaml1, templateYaml2 } from './sample-entities';
 import harnessLogo from './assets/logo-harness.svg';
 import githubLogo from './assets/github-logo.svg';
 
@@ -235,6 +236,38 @@ const EditorContainer = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   gap: 0.75rem;
+`;
+
+const EntityTypeSelector = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  
+  @media (max-width: 768px) {
+    flex-direction: row;
+    justify-content: center;
+  }
+`;
+
+const EntityTypeButton = styled.button`
+  background-color: ${props => props.active ? '#00ADE4' : 'white'};
+  color: ${props => props.active ? 'white' : '#333'};
+  border: 1px solid ${props => props.active ? '#00ADE4' : '#d0d0d0'};
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: ${props => props.active ? '#0095c8' : '#f5f5f5'};
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
 `;
 
 const Button = styled.button`
@@ -492,20 +525,62 @@ function App() {
   const [direction, setDirection] = useState('1to2');
   const [error, setError] = useState('');
   const [isConverting, setIsConverting] = useState(false);
+  const [entityType, setEntityType] = useState('component');
 
-  // Set initial sample YAML based on direction
+  // Set initial sample YAML based on direction and entity type
   useEffect(() => {
-    // Use the simple example as default
-    setInputYaml(direction === '1to2' ? sampleComponentYaml1to2 : sampleComponentYaml2to1);
+    // Load the appropriate sample based on direction and entity type
+    let sample = '';
+    
+    if (direction === '1to2') {
+      switch (entityType) {
+        case 'component':
+          sample = componentYaml1;
+          break;
+        case 'api':
+          sample = apiYaml1;
+          break;
+        case 'resource':
+          sample = resourceYaml1;
+          break;
+        case 'template':
+          sample = templateYaml1;
+          break;
+        default:
+          sample = componentYaml1;
+      }
+    } else {
+      switch (entityType) {
+        case 'component':
+          sample = componentYaml2;
+          break;
+        case 'api':
+          sample = apiYaml2;
+          break;
+        case 'resource':
+          sample = resourceYaml2;
+          break;
+        case 'template':
+          sample = templateYaml2;
+          break;
+        default:
+          sample = componentYaml2;
+      }
+    }
+    
+    setInputYaml(sample);
     setOutputYaml('');
     setError('');
-  }, [direction]);
+  }, [direction, entityType]);
 
   const handleConvert = () => {
-    setError('');
+    if (!inputYaml) return;
+    
     setIsConverting(true);
-
+    setError('');
+    
     try {
+      // Ensure annotations persist for both 1.0 and 2.0 conversions
       const result = convertYaml(inputYaml, direction);
       setOutputYaml(result);
     } catch (err) {
@@ -518,6 +593,10 @@ function App() {
 
   const handleDirectionChange = (e) => {
     setDirection(e.target.value);
+  };
+  
+  const handleEntityTypeChange = (type) => {
+    setEntityType(type);
   };
 
   const handleDownload = () => {
@@ -545,7 +624,7 @@ function App() {
       <Header>
         <HeaderLeft>
           <HarnessLogo />
-          <Title>Harness YAML Converter</Title>
+          <Title>Harness IDP YAML Converter</Title>
         </HeaderLeft>
         <HeaderRight>
           <Select value={direction} onChange={handleDirectionChange}>
@@ -563,6 +642,32 @@ function App() {
               Convert
             </Button>
           </PanelHeader>
+          <EntityTypeSelector>
+            <EntityTypeButton 
+              active={entityType === 'component'} 
+              onClick={() => handleEntityTypeChange('component')}
+            >
+              Component
+            </EntityTypeButton>
+            <EntityTypeButton 
+              active={entityType === 'api'} 
+              onClick={() => handleEntityTypeChange('api')}
+            >
+              API
+            </EntityTypeButton>
+            <EntityTypeButton 
+              active={entityType === 'resource'} 
+              onClick={() => handleEntityTypeChange('resource')}
+            >
+              Resource
+            </EntityTypeButton>
+            <EntityTypeButton 
+              active={entityType === 'template'} 
+              onClick={() => handleEntityTypeChange('template')}
+            >
+              Template/Workflow
+            </EntityTypeButton>
+          </EntityTypeSelector>
           <EditorContainer>
             <Editor
               height="100%"
@@ -625,7 +730,7 @@ function App() {
             <CreatorInfo>Created by <CreatorLink href="https://in.linkedin.com/in/shibamdhar" target="_blank" rel="noopener noreferrer">&nbsp;Shibam Dhar</CreatorLink></CreatorInfo>
           </FooterLeft>
           <FooterRight>
-            Powered by <HarnessLink href="https://www.harness.io/products/internal-developer-portal" target="_blank" rel="noopener noreferrer">Harness IDP</HarnessLink>
+            Powered by <HarnessLink href="https://www.harness.io/products/internal-developer-portal" target="_blank" rel="noopener noreferrer">Harness IDP</HarnessLink> | <HarnessLink href="https://developer.harness.io/docs/internal-developer-portal/catalog/catalog-yaml/" target="_blank" rel="noopener noreferrer">YAML Guide</HarnessLink>
           </FooterRight>
         </FooterContent>
       </Footer>
